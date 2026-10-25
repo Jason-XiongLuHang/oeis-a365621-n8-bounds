@@ -1,31 +1,33 @@
-# Certified bounds for OEIS A365621(8)
+# OEIS A365621(8) = 17
 
-**14 <= a(8) <= 17. The exact value remains unknown.**
+This repository provides reproducible evidence for the eighth term of OEIS A365621, the domination number of the graph of free octominoes under the sequence's single-cell move rule.
 
-This repository publishes coordinates and independently executable certificates. The official OEIS entry checked on 2026-10-25 still listed the upper bound18; the 17-shape witness improves that recorded upper bound. This is not a claim of global priority. An OEIS update has not yet been submitted.
+The graph has 369 vertices and 6,544 edges. A 17-vertex dominating set proves the upper bound. An exhaustive, independently replayed exact search excludes dominating sets of size at most 16, proving the matching lower bound. Thus **a(8) = 17** for this graph definition.
 
-## Reproduce with Python standard library only
+## Evidence and reproduction
 
-```sh
-python -B verify_release.py --inputs inputs --output my_check.json --rebuild --cuts dual_cuts_k14.json
+Download the complete evidence archive and its SHA-256 checksum from the [v2.0.0 release](https://github.com/Jason-XiongLuHang/oeis-a365621-n8-bounds/releases/tag/v2.0.0). The archive contains the complete proof tree, graph inputs, the Python standard-library checker, an independent geometric reconstruction, the 17-vertex construction, and run records. The large proof tree is kept in the release archive rather than Git history.
+
+After extracting the archive, run from its root with Python 3.12 (standard library only):
+
+```powershell
+python -B verify_v3_sparse.py LATEST_PROOF --inputs inputs --output MY_ROOT_VERIFICATION.json
 ```
 
-Use a new output path; the verifier refuses to overwrite existing receipts. No SAT, LP, numpy or third-party package is needed. `--rebuild` generates2725 translation-only fixed octominoes, takes their D4 quotient to369 free shapes and independently checks all67896 vertex pairs, reconstructing6544 graph edges. It then verifies the coordinates, every explicit one-cell move and all369 integer dual inequalities. `VERIFICATION.json` records an actual local execution, not an assumed pass.
+The output path must not already exist. The expected result is `PROVED`, `k=16`, `strict_lower=17`, `frontier=0`, and `nodes=759011`. The checker also validates the 5,481-node lower-bound dependency. Allow about 8 GiB of available RAM; the recorded independent check took about 183 seconds on the original machine.
 
-## Mathematical object
+The archive includes a separate geometry rebuild and upper-bound verification. Hashes of the principal artifacts are listed in `LATEST_RESULT.json` within the archive. Archive checksum:
 
-Vertices are free octominoes, modulo integer translations, rotations and reflections. Distinct vertices are adjacent if representatives overlap in exactly seven cells. The detached intermediate is allowed to be disconnected. No sliding path or bound on move distance is imposed. This matches [A365621](https://oeis.org/A365621) and [A098891](https://oeis.org/A098891). It is not a cell-adjacency graph.
+```text
+a52f1011b7c46aacd50940eb0379629c7815f83e13f00c6b39b4aa194c3bce03  A365621_n8_exact17_v2.0.0.zip
+```
 
-## Certificates
+`DOMINATING_SET_17.csv` and `.json` give the upper-bound construction. `LATEST_RESULT.json` records the exact result and the proof/graph/checker hashes.
 
-- `upper17_coordinates.csv`, `UPPER17_CONFIGURATIONS.md`, and `inputs/UPPER17.json` contain all17 shapes. IDs are zero-based positions in `inputs/graph_n8.json`, not an asserted OEIS-wide ordering.
-- `inputs/independent_highs17.json` contains an explicit remove/add witness for every non-selected target. Selected shapes cover themselves.
-- `lower14_weights.csv` and `inputs/LOWER14_RATIONAL.json` contain nonnegative integer target weights. Their sum is1351314766, with denominator100000000. Every closed-neighborhood sum is at most99999999. For any dominating setS, the total target weight is at most the sum of the selected closed-neighborhood weights, hence |S| >= ceil(13.51314766)=14. Only integer arithmetic is needed.
-- `dual_cuts_k14.json` contains certified necessary conditions for the <=14 decision. These are not an UNSAT proof.
-- `FRACTIONAL_LP_BARRIER.json` describes a fractional cover of cost13.513576, not an integer dominating set. It explains why ordinary nonnegative vertex-weight duals alone cannot certify15.
+## Scope and provenance
 
-## Provenance and limits
+The move graph uses translation, rotation, and reflection equivalence; removal of a cell is allowed to leave a disconnected seven-cell intermediate shape before one cell is reattached. See the OEIS entry for the canonical sequence definition: <https://oeis.org/A365621>.
 
-Implementation, derivations and documentation were AI-assisted and validated using distinct implementations. This is not external human peer review. No n8 UNSAT certificate or proof of exact value17 is claimed. A human OEIS contributor must understand the programs and comply with the [OEIS policy on AI-assisted submissions](https://oeis.org/wiki/Use_of_AI_for_OEIS_Submissions_is_Forbidden), including writing their own comment. Do not attribute authorship to an AI tool.
+The older v1.0.0 release and root-level historical files document the former interval `14 <= a(8) <= 17`; they are retained as historical evidence. This v2.0.0 release supplies the complete exact-value proof.
 
-`RELEASE_FILES.csv` lists SHA256 hashes of distributed files, excluding itself. No blanket license grant is made by this evidence publication. GitHub account ownership is not a claim that these results have undergone human expert review.
+AI tools assisted with coding and analysis. The archive records human responsibility and the verification scope. No claim of external peer review or priority over unpublished work is made. This repository does not grant a license beyond the rights held by its contributors.
