@@ -31,3 +31,8 @@ The move graph uses translation, rotation, and reflection equivalence; removal o
 The older v1.0.0 release and root-level historical files document the former interval `14 <= a(8) <= 17`; they are retained as historical evidence. This v2.0.0 release supplies the complete exact-value proof.
 
 AI tools assisted with coding and analysis. The archive records human responsibility and the verification scope. No claim of external peer review or priority over unpublished work is made. This repository does not grant a license beyond the rights held by its contributors.
+
+
+## Related result: A367441(8) = 54
+
+The minimum number of free heptomino parents generating all 369 free octominoes by adding one cell is exactly **54**. A 54-parent construction and complete independently checked exclusion of covers of size at most 53 are available in the separate [a367441-n8-v1.0.0 release](https://github.com/Jason-XiongLuHang/oeis-a365621-n8-bounds/releases/tag/a367441-n8-v1.0.0). See [the result and reproduction instructions](a367441-n8/README.md). This does not change the A365621 result or its v1.0.0/v2.0.0 release assets.
